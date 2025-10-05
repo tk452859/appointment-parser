@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Appointment Parser - LIVE!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .demo-section {
+            margin-bottom: 40px;
+        }
+
+        .demo-section h2 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 15px;
+            border: 2px solid #bdc3c7;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: vertical;
+            margin-bottom: 15px;
+            transition: border-color 0.3s;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+
+        button {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .result {
+            margin-top: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+        }
+
+        .endpoints {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 30px;
+        }
+
+        .endpoint {
+            margin: 10px 0;
+            padding: 10px;
+            background: white;
+            border-radius: 5px;
+            border-left: 3px solid #27ae60;
+        }
+
+        .success-badge {
+            display: inline-block;
+            background: #27ae60;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>📅 Appointment Parser</h1>
+        <p>Convert natural language into structured appointment data</p>
+        <div class="success-badge">LIVE & DEPLOYED</div>
+    </div>
+
+    <div class="content">
+        <div class="demo-section">
+            <h2>🚀 Try It Live</h2>
+            <textarea id="textInput" placeholder="Type your appointment request here...
+Examples:
+• Book dentist next Friday at 3pm
+• I need to see doctor tomorrow morning
+• Dental checkup next Monday"></textarea>
+            <button onclick="parseAppointment()">Parse Appointment</button>
+
+            <div id="result" class="result" style="display: none;">
+                <h3>📋 Parsed Result:</h3>
+                <pre id="resultContent"></pre>
+            </div>
+        </div>
+
+        <div class="endpoints">
+            <h2>🔗 API Endpoints</h2>
+            <div class="endpoint">
+                <strong>GET</strong> <code>/api/v1/appointments/health</code>
+                <br><small>Health check endpoint</small>
+            </div>
+            <div class="endpoint">
+                <strong>POST</strong> <code>/api/v1/appointments/parse</code>
+                <br><small>Parse appointment text (form-data: text)</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    async function parseAppointment() {
+        const text = document.getElementById('textInput').value.trim();
+        const resultDiv = document.getElementById('result');
+        const resultContent = document.getElementById('resultContent');
+
+        if (!text) {
+            alert('Please enter some text to parse!');
+            return;
+        }
+
+        try {
+            resultContent.textContent = '⏳ Processing...';
+            resultDiv.style.display = 'block';
+
+            const formData = new FormData();
+            formData.append('text', text);
+
+            const response = await fetch('/api/v1/appointments/parse', {
+                method: 'POST',
+                body: formData
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+            resultContent.textContent = JSON.stringify(result, null, 2);
+
+        } catch (error) {
+            resultContent.textContent = `❌ Error: ${error.message}`;
+        }
+    }
+
+    // Allow pressing Enter in textarea to submit
+    document.getElementById('textInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            parseAppointment();
+        }
+    });
+</script>
+</body>
+</html>
