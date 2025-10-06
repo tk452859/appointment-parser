@@ -40,3 +40,30 @@ curl https://appointment-parser-production.up.railway.app/api/v1/appointments/he
 # Parse Appointment
 curl -X POST https://appointment-parser-production.up.railway.app/api/v1/appointments/parse \
   -F "text=Book dentist next Friday at 3pm"
+
+┌─────────────────┐    ┌──────────────────┐    ┌────────────────────┐
+│   Input Layer   │ -> │  Processing      │ -> │   Output Layer     │
+│                 │    │  Pipeline        │    │                    │
+│ • Text Input    │    │ • OCR Service    │    │ • Structured JSON  │
+│ • Image Upload  │    │ • Entity Extract │    │ • Error Handling   │
+└─────────────────┘    │ • Normalization  │    └────────────────────┘
+                       │ • Validation     │
+                       └──────────────────┘
+###📁 Project Structure
+src/main/java/com/appointment/
+├── controller/
+│   └── AppointmentController.java      # REST endpoints
+├── service/
+│   ├── OCRService.java                 # Text extraction
+│   ├── EntityExtractionService.java    # NLP entity recognition
+│   ├── DateNormalizationService.java   # Date parsing
+│   ├── TimeNormalizationService.java   # Time standardization
+│   ├── DepartmentMappingService.java   # Department mapping
+│   └── ValidationService.java          # Guardrail implementation
+├── model/
+│   ├── AppointmentRequest.java         # Input DTO
+│   ├── AppointmentResponse.java        # Output DTO
+│   ├── Entities.java                   # Entity container
+│   └── NormalizedData.java             # Normalized data
+└── config/
+    └── AppConfig.java                  # Application configuration
