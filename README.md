@@ -49,28 +49,5 @@ curl -X POST https://appointment-parser-production.up.railway.app/api/v1/appoint
 └─────────────────┘    │ • Normalization  │    └────────────────────┘
                        │ • Validation     │
                        └──────────────────┘
-Core Services:
-OCRService: Handles text extraction from images (Tesseract-ready)
-
-EntityExtractionService: NLP-based entity recognition with regex patterns
-
-DateNormalizationService: Converts natural dates to ISO format
-
-TimeNormalizationService: Standardizes time formats (12h → 24h)
-
-DepartmentMappingService: Maps colloquial terms to formal departments
-
-ValidationService: Implements guardrails and ambiguity detection
-
-🛠️ Technology Stack
-Backend: Spring Boot 3.2, Java 17
-
-Architecture: Multi-service, REST API
-
-Deployment: Railway (Production)
-
-Build Tool: Maven
-
-Logging: SLF4J with structured logging
 
 
