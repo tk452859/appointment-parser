@@ -49,21 +49,28 @@ curl -X POST https://appointment-parser-production.up.railway.app/api/v1/appoint
 └─────────────────┘    │ • Normalization  │    └────────────────────┘
                        │ • Validation     │
                        └──────────────────┘
-###📁 Project Structure
-src/main/java/com/appointment/
-├── controller/
-│   └── AppointmentController.java      # REST endpoints
-├── service/
-│   ├── OCRService.java                 # Text extraction
-│   ├── EntityExtractionService.java    # NLP entity recognition
-│   ├── DateNormalizationService.java   # Date parsing
-│   ├── TimeNormalizationService.java   # Time standardization
-│   ├── DepartmentMappingService.java   # Department mapping
-│   └── ValidationService.java          # Guardrail implementation
-├── model/
-│   ├── AppointmentRequest.java         # Input DTO
-│   ├── AppointmentResponse.java        # Output DTO
-│   ├── Entities.java                   # Entity container
-│   └── NormalizedData.java             # Normalized data
-└── config/
-    └── AppConfig.java                  # Application configuration
+Core Services:
+OCRService: Handles text extraction from images (Tesseract-ready)
+
+EntityExtractionService: NLP-based entity recognition with regex patterns
+
+DateNormalizationService: Converts natural dates to ISO format
+
+TimeNormalizationService: Standardizes time formats (12h → 24h)
+
+DepartmentMappingService: Maps colloquial terms to formal departments
+
+ValidationService: Implements guardrails and ambiguity detection
+
+🛠️ Technology Stack
+Backend: Spring Boot 3.2, Java 17
+
+Architecture: Multi-service, REST API
+
+Deployment: Railway (Production)
+
+Build Tool: Maven
+
+Logging: SLF4J with structured logging
+
+
